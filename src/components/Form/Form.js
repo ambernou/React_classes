@@ -18,6 +18,7 @@ export const Form = ({ sendMessage }) => {
 
     return (
         <form>
+            <p>Enter your message:</p>
             <input type='text' value={userMessage} onChange={handleChange} />
             <button type='submit' onClick={handleSubmit}>Send!</button>
         </form>
