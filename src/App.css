@@ -1,0 +1,15 @@
+.chatsBox {
+  display: flex;
+  width: 650px;
+  justify-content: space-between;
+}
+
+.chatsTitle {
+  width: 160px;
+}
+
+.chatItem {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
