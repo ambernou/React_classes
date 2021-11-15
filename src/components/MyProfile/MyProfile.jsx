@@ -32,10 +32,10 @@ export const MyProfile = () => {
     return (
         <>
         <h2>My profile</h2>
-        <input type="checkbox" checked={checkboxValue} onChange={handleChange} />
+        <span>Checkbox: </span><input type="checkbox" checked={checkboxValue} onChange={handleChange} /><br />
         <input type="text" value={newName} onChange={handleChangeName} />
-        <button type="submit" onClick={handleChangeNameBtn}>Create my new name!</button>
-        <span>{name}</span>
+        <button type="submit" onClick={handleChangeNameBtn}>Create my new name!</button><br />
+        <span>My name: {name}</span>
         </>
     )
 }
