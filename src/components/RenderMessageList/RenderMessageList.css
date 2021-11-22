@@ -1,0 +1,9 @@
+.clickHeader {
+    color: red;
+    transition: 0.2s;
+}
+
+.clickHeader:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
