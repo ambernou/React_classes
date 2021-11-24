@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ListGroup, Button, FormControl, InputGroup } from 'react-bootstrap';
-// import { v4 as uuidv4 } from 'uuid';
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addChat, deleteChat } from "../../store/chats/actions";
+import { selectChats } from "../../store/chats/selectors";
 import { ChatItem } from "../ChatItem/ChatItem";
-// import { useParams } from 'react-router';
 import './ChatsList.css';
 
-export const ChatsList = ({ chatList, onAddChat, onDeleteChat }) => {
+export const ChatsList = () => {
+    const chatList = useSelector(selectChats);
+    const dispatch = useDispatch();
+
+    const handleAddChat = useCallback ((name) => {
+        const newId = `${name}${Date.now()}`;
+        dispatch(addChat({name, id: newId}));
+    }, [dispatch]);
+
+    const handleDeleteChat = useCallback((idToDelete) => {
+        dispatch(deleteChat(idToDelete));
+    }, [dispatch]);
+
     const [value, setValue] = useState('');
 
     const handleChange = (e) => {
@@ -15,7 +27,8 @@ export const ChatsList = ({ chatList, onAddChat, onDeleteChat }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onAddChat(value);
+        // onAddChat(value);
+        handleAddChat(value);
         setValue('');
     }
 
@@ -32,7 +45,7 @@ export const ChatsList = ({ chatList, onAddChat, onDeleteChat }) => {
                             {chat.name}
                         </NavLink>
                         <Button type="submit" variant="primary" onClick={() => onDeleteChat(chat.id)}><i className="fas fa-trash"></i></Button> */}
-                        <ChatItem chat={chat} onDeleteChat={onDeleteChat} />
+                        <ChatItem chat={chat} onDeleteChat={handleDeleteChat} />
                     </ListGroup.Item>
                 )) }
             </ListGroup>

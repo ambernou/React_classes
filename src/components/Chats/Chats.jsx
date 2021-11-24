@@ -3,20 +3,21 @@ import { RenderMessageList } from '../RenderMessageList/RenderMessageList';
 import { ChatsList } from '../ChatsList/ChatsList';
 import { useCallback, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import './Chats.css';
 import { Navigate, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMessage } from '../../store/messages/actions';
+import { selectMessages } from '../../store/messages/selectors';
+import './Chats.css';
 
-function Chats({ chatList, messages, setMessages, onAddChat, onDeleteChat }) {
+function Chats() {
+    const messages = useSelector(selectMessages);
+    const dispatch = useDispatch();
     const { chatId } = useParams();
-
-    // const [messageList, setMessageList] = useState(initialMessages);
 
     const handleMessageList = useCallback(
         (auth, mes) => {
-            const newMessage = {id: uuidv4(), author: auth, message: mes}
-            setMessages((prevMessages) => ({
-                ...prevMessages, [chatId]: [...prevMessages[chatId], newMessage]
-            }));
+            const newMessage = {id: uuidv4(), author: auth, message: mes};
+            dispatch(addMessage(newMessage, chatId));
         }, 
         [chatId]
     );
@@ -39,7 +40,8 @@ function Chats({ chatList, messages, setMessages, onAddChat, onDeleteChat }) {
     return (
         <div className="chatsBox">
             <div className="chatsTitle">
-                <ChatsList chatList={chatList} onAddChat={onAddChat} onDeleteChat={onDeleteChat} />
+                <ChatsList />
+                {/* chatList={chatList} onAddChat={onAddChat} onDeleteChat={onDeleteChat}  */}
             </div>
             <div className="chatItem">
                 <div>
