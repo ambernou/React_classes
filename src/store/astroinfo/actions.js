@@ -2,7 +2,8 @@ export const REQUEST_ASTROINFO_LOADING = "ASTROINFO::REQUEST_LOADING";
 export const REQUEST_ASTROINFO_FAILURE = "ASTROINFO::REQUEST_FAILURE";
 export const REQUEST_ASTROINFO_SUCCESS = "ASTROINFO::REQUEST_SUCCESS";
 
-const apiUrl2 = "https://apodapi.herokuapp.com/api/";
+const apiUrl2 = "https://apodapi.herokuapp.com/api/?count=1";
+// https://apodapi.herokuapp.com/api/?count=1
 
 export const getAstroInfoLoading = () => ({
     type: REQUEST_ASTROINFO_LOADING,
