@@ -1,7 +1,7 @@
 import { REQUEST_ASTROINFO_LOADING, REQUEST_ASTROINFO_SUCCESS, REQUEST_ASTROINFO_FAILURE } from "./actions"
 
 const initialState = {
-    astroInfoData: {},
+    astroInfoData: [],
     request: {
         status: "IDLE",
         error: "",
