@@ -1,23 +1,31 @@
 import { MessageForm } from '../MessageForm/MessageForm';
 import { RenderMessageList } from '../RenderMessageList/RenderMessageList';
 import { ChatsList } from '../ChatsList/ChatsList';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Navigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMessageWithReply } from '../../store/messages/actions';
+import { addMessageWithReply, initMessagesTracking } from '../../store/messages/actions';
 import { selectMessages } from '../../store/messages/selectors';
+import { push } from "firebase/database";
 import './Chats.css';
+import { getChatMsgsListRefById } from '../../services/firebase';
+import { initChatsTracking } from '../../store/chats/actions';
 
-function Chats() {
+function Chats({ msgs }) {
     const messages = useSelector(selectMessages);
     const dispatch = useDispatch();
     const { chatId } = useParams();
+
+    useEffect(() => {
+        dispatch(initMessagesTracking());
+    }, []);
 
     const handleMessageList = useCallback(
         (auth, mes) => {
             const newMessage = {id: uuidv4(), author: auth, message: mes};
             dispatch(addMessageWithReply(newMessage, chatId));
+            // push(getChatMsgsListRefById(chatId), newMessage);
         }, 
         [chatId]
     );
@@ -33,7 +41,7 @@ function Chats() {
             </div>
             <div className="chatItem">
                 <div>
-                    { messages[chatId].length !== 0 ? <RenderMessageList messageList={messages[chatId]}/> : 'no messages'}
+                    { messages[chatId].length !== 0 ? <RenderMessageList messageList={messages[chatId]}/> : 'no messages yet'}
                 </div>
                 <MessageForm sendMessage={handleMessageList}/>
             </div>  

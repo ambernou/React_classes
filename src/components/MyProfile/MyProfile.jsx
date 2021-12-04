@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "../../services/firebase";
+import { logOut, userRef } from "../../services/firebase";
 // import { store } from '../../store';
 import { toggleCheckbox, changeName } from "../../store/profile/actions";
 import { selectCheck, selectName } from "../../store/profile/selectors";
+import { onValue, set } from "firebase/database";
 import './MyProfile.css';
 
 export const MyProfile = () => {
@@ -12,6 +13,15 @@ export const MyProfile = () => {
     const dispatch = useDispatch ();
 
     const [newName, setNewName] = useState('');
+
+    useEffect(() => {
+        const unsubscribe = onValue(userRef, (snapshot) => {
+            const userData = snapshot.val();
+            dispatch(changeName(userData?.name || ""));
+        });
+
+        return unsubscribe;
+    }, [changeName]);
 
     const handleChange = () => {
         dispatch(toggleCheckbox);
@@ -22,8 +32,11 @@ export const MyProfile = () => {
     };
     const handleChangeNameBtn = (e) => {
         e.preventDefault();
-        dispatch(changeName(newName));
-        setNewName('');
+        // dispatch(changeName(newName));
+        // setNewName('');
+        set(userRef, {
+            name: newName
+        });
     };
 
     const handleLogOutClick = async () => {

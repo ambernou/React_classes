@@ -1,3 +1,4 @@
+import { onValue } from "@firebase/database";
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
@@ -10,7 +11,8 @@ export const RenderMessageList = ({ messageList }) => {
     const {chatId } = useParams();
     
     const handleDeleteClick = (idToDelete) => {
-        dispatch(deleteMessage(idToDelete, chatId));
+        // dispatch(deleteMessage(idToDelete, chatId));
+        console.log("удаление не работает :(");
     };
 
     return (

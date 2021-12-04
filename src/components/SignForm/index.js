@@ -21,8 +21,8 @@ export const SignForm = ({ onSubmit, error, loading }) => {
     return (
         <React.Fragment>
             <form onSubmit={handleSubmit}>
-                <input type="text" value={email} onChange={handleChangeEmail} />
-                <input type="password" value={pass} onChange={handleChangePass} />
+                <input type="text" value={email} onChange={handleChangeEmail} placeholder="E-mail" />
+                <input type="password" value={pass} onChange={handleChangePass} placeholder="Password" />
                 <input type="submit" disabled={loading} />
             </form>
             {error && <h4>{error}</h4>}

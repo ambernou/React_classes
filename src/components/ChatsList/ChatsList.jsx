@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from "react";
+import { onValue, set } from "@firebase/database";
+import React, { useCallback, useEffect, useState } from "react";
 import { ListGroup, Button, FormControl, InputGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
-import { addChat, deleteChat } from "../../store/chats/actions";
+import { chatsRef, getChatMsgsRefById, getChatRefById } from "../../services/firebase";
+import { addChat, addChatWithFb, deleteChat, initChatsTracking, removeChatWithFB } from "../../store/chats/actions";
 import { selectChats } from "../../store/chats/selectors";
 import { ChatItem } from "../ChatItem/ChatItem";
 import './ChatsList.css';
@@ -9,17 +11,26 @@ import './ChatsList.css';
 export const ChatsList = () => {
     const chatList = useSelector(selectChats);
     const dispatch = useDispatch();
+    const [value, setValue] = useState('');
 
-    const handleAddChat = useCallback ((name) => {
-        const newId = `${name}${Date.now()}`;
-        dispatch(addChat({name, id: newId}));
-    }, [dispatch]);
+    useEffect(() => {
+        dispatch(initChatsTracking());
+        // onValue(chatsRef, (chatsSnap) => {
+        //     console.log(chatsSnap);
+
+        //     const newChats = [];
+        //     chatsSnap.forEach((snapshot) => {
+        //         newChats.push(snapshot.val());
+        //     });
+
+        //     setChats(newChats);
+        // });
+    }, []);
 
     const handleDeleteChat = useCallback((idToDelete) => {
-        dispatch(deleteChat(idToDelete));
+        // dispatch(deleteChat(idToDelete));
+        dispatch(removeChatWithFB(idToDelete));
     }, [dispatch]);
-
-    const [value, setValue] = useState('');
 
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -27,7 +38,14 @@ export const ChatsList = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleAddChat(value);
+        const newId = `${value}${Date.now()}`;
+        dispatch(addChatWithFb({name: value, id: newId}));
+        //dispatch(addChat({name: value, id: newId}));
+        //handleAddChat(value);
+
+        // set(getChatRefById(newId), { name: value, id: newId });
+        // set(getChatMsgsRefById(newId), { empty: true });
+
         setValue('');
     }
 
