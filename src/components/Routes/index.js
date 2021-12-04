@@ -15,7 +15,6 @@ import { SignUp } from "../SignUp";
 
 export const Router = () => {
     const dispatch = useDispatch();
-    const [msgs, setMsgs] = useState({});
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -28,18 +27,6 @@ export const Router = () => {
 
         return unsubscribe;
     }, []);
-
-    // useEffect(() => {
-    //     onValue(messagesRef, (snapshot) => {
-    //         const newMsgs = {};
-
-    //         snapshot.forEach((chatMsgsSnap) => {
-    //             newMsgs[chatMsgsSnap.key] = Object.values(chatMsgsSnap.val().messageList || {});
-    //         });
-
-    //         setMsgs(newMsgs);
-    //     });
-    // }, []);
 
     return (
         <BrowserRouter>
@@ -86,7 +73,7 @@ export const Router = () => {
                         path=":chatId"
                         element={
                             <PrivateRoute>
-                                <Chats msgs={msgs} />
+                                <Chats />
                             </PrivateRoute>
                         }
                     />

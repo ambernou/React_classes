@@ -12,7 +12,7 @@ import './Chats.css';
 import { getChatMsgsListRefById } from '../../services/firebase';
 import { initChatsTracking } from '../../store/chats/actions';
 
-function Chats({ msgs }) {
+function Chats() {
     const messages = useSelector(selectMessages);
     const dispatch = useDispatch();
     const { chatId } = useParams();
